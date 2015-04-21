@@ -99,6 +99,13 @@ func (e *Element) UnlinkPads(pad_name string, dst *Element, dst_pad_name string)
 	C.gst_element_unlink_pads(e.g(), src_pname, dst.g(), dst_pname)
 }
 
+func (e *Element) LinkPad(src *Pad, dst *Element) bool {
+	dst_pad_name := "sink"
+	dst_pname := (*C.gchar)(C.CString(dst_pad_name))
+	dst_pad := C.gst_element_get_static_pad (dst.g(), dst_pname)
+	return C.gst_pad_link(src.g(), dst_pad) != 0
+}
+
 func (e *Element) SetState(state State) StateChangeReturn {
 	return StateChangeReturn(C.gst_element_set_state(e.g(), C.GstState(state)))
 }
@@ -147,6 +154,11 @@ func (e *Element) GetBus() *Bus {
 	b := new(Bus)
 	b.SetPtr(glib.Pointer(bus))
 	return b
+}
+
+// gst_element_sync_state_with_parent (element)
+func (e *Element) SyncStateWithParent () bool {
+	return C.gst_element_sync_state_with_parent(e.g()) != 0
 }
 
 // TODO: Move ElementFactoryMake to element_factory.go
