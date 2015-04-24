@@ -32,7 +32,7 @@ Fields _parse_struct(GstStructure *s) {
 	int n = gst_structure_n_fields(s);
 	Fields f = { malloc(n * sizeof(Field)), 0 };
 	gst_structure_foreach(s, _parse_field, (gpointer)(&f));
-	return f;	
+	return f;
 }
 
 #cgo pkg-config: gstreamer-1.0
@@ -43,8 +43,8 @@ import (
 	"os"
 	"unsafe"
 	"fmt"
-	
-	"github.com/ziutek/glib"
+
+	"github.com/Xeralux/glib"
 )
 
 func v2g(v *glib.Value) *C.GValue {

@@ -8,7 +8,7 @@ import "C"
 
 import (
 	"unsafe"
-	"github.com/ziutek/glib"
+	"github.com/Xeralux/glib"
 )
 
 type MessageType C.GstMessageType
