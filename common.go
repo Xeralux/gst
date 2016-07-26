@@ -35,6 +35,11 @@ Fields _parse_struct(GstStructure *s) {
 	return f;
 }
 
+gboolean
+_deserialize_value (GValue *dest, const gchar *srcval) {
+	return gst_value_deserialize (dest, srcval);
+}
+
 #cgo pkg-config: gstreamer-1.0
 */
 import "C"
@@ -141,6 +146,14 @@ func ValueFraction(v *glib.Value) *Fraction {
 
 var TYPE_FOURCC, TYPE_INT_RANGE, TYPE_FRACTION glib.Type
 
+
+func DeserializeValue (dest *glib.Value, srcval string) bool {
+	s := C.CString (srcval)
+	defer C.free (unsafe.Pointer (s))
+
+	return C._deserialize_value ((*C.GValue) (dest.GetPtr()),
+	                             (*C.gchar) (s)) != C.gboolean (0)
+}
 
 func init() {
 	alen := C.int(len(os.Args))
